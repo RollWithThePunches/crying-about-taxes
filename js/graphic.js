@@ -1,13 +1,13 @@
 // import { Z_ASCII } from "zlib";
 
-;(function() {
+;(() => {
   /* from https://davidwalsh.name/javascript-debounce-function */
   function debounce(func, wait, immediate) {
     var timeout;
-    return function() {
+    return () => {
       var context = this,
         args = arguments;
-      var later = function() {
+      var later = () => {
         timeout = null;
         if (!immediate) func.apply(context, args)
       }
@@ -45,7 +45,7 @@
 
   var aspect = width / height;
 
-  d3.select(window).on('resize', function() {
+  d3.select(window).on('resize', () => {
     var targetWidth = svg.node().getBoundingClientRect().width;
     svg.attr('width', targetWidth);
     svg.attr('height', targetWidth / aspect);
@@ -54,10 +54,10 @@
   // var margin = { top: 20, right: 180, bottom: 30, left: 40 }
 
   var bucketOutline = d3.line()
-    .x(function(d, i) {
+    .x((d,i) => {
       return d.x * 2;
     })
-    .y(function(d, i) {
+    .y((d,i) => {
       return d.y * 2;
     });
   // .curve(interpolate)
@@ -95,7 +95,7 @@
   d3.csv('data/data.csv', function(error, data) {
     if (error) throw error
 
-    data.forEach(function(d) {
+    data.forEach((d) => {
       d.Slider = d.Slider
       d.perc1 = +d.perc1
       d.perc2 = +d.perc2
@@ -103,29 +103,29 @@
     });
 
     var data_nest = d3.nest()
-      .key(function(d) {
+      .key((d) => {
         return d.Slider
       })
       .entries(data);
 
     var data_nest_percent = d3.nest()
-      .key(function(d) {
+      .key((d) => {
         return d.Slider
       })
       .entries(data);
 
-    data = data_nest.filter(function(d) {
+    data = data_nest.filter((d) => {
       return d.key == 0;
     })[0].values;
 
-    dataPercent = data_nest_percent.filter(function(d) {
+    dataPercent = data_nest_percent.filter((d) => {
       return d.key == 0;
     })[0].values;
 
     var category = ['one', 'two'];
 
     x.domain(
-      data.map(function(d) {
+      data.map((d) => {
         return d.x;
       })
     )
@@ -137,22 +137,22 @@
       .enter()
       .append('g')
       .attr('class', 'bars')
-      .attr('fill', function(d) {
+      .attr('fill', (d) => {
         return z(d.key);
       })
       .selectAll('rect')
-      .data(function(d) {
+      .data((d) => {
         return d;
       })
       .enter()
       .append('rect')
-      .attr('x', function(d) {
+      .attr('x', (d) => {
         return x(d.data.x) - 100;
       })
-      .attr('y', function(d) {
+      .attr('y', (d) => {
         return y(d[1]) + 300;
       })
-      .attr('height', function(d) {
+      .attr('height', (d) => {
         return y(d[0]) - y(d[1]);
       })
       .attr('width', x.bandwidth() + 80);
@@ -161,11 +161,11 @@
 
     // var data_nest_legend = d3
     // .nest()
-    // .key(function(d) {
+    // .key((d) => {
     //   return d.Slider
     // })
     // .entries(data)
-    // .map(function(d) {
+    // .map((d) => {
     //   Slider: d.key,
     //   perc1: d.values,
     //   perc2: d.values
@@ -176,7 +176,7 @@
     // .enter()
     // .append('text')
     // .attr("text-anchor", "middle")
-    // .text(function(d, i) {
+    // .text((d,i) => {
     //   return d.perc1
     // });
 
@@ -203,20 +203,20 @@
       .style('font', '10px sans-serif');
 
     legend.append('rect')
-      .attr('x', function(d, i) {
+      .attr('x', (d,i) => {
         return width / 8 + i * 80
       })
       .attr('y', 450)
       .attr('width', 23)
       .attr('height', 18)
-      .attr('fill', function(d) {
+      .attr('fill', (d) => {
         return z(d.key)
       });
 
     // legend.append('text')
     // // .data(data)
     // .data(stack.keys(perc)(data))
-    // .attr('x', function(d, i) {
+    // .attr('x', (d,i) => {
     //   return (width / 8) + i * 80
     // })
     //   .attr('y', 450)
@@ -260,7 +260,7 @@
 
         var tearsClass = document.querySelectorAll('.rich-person_face-tears');
 
-        tearsClass.forEach(function(tears, i) {
+        tearsClass.forEach((tears, i) => {
           tears.classList.remove(...speeds);
           setTimeout(() => {
             tears.classList.add(speed_class);
@@ -269,7 +269,7 @@
 
         // Faces animation
         var facesClass = document.querySelectorAll('.rich-person_face-happy');
-        facesClass.forEach(function(faces) {
+        facesClass.forEach((faces) => {
           if (value == 0) {
             faces.classList.replace(
               'rich-person_face-very-sad',
@@ -281,7 +281,7 @@
         })
 
         var yuppyClass = document.querySelectorAll('.rich-person_yuppy-happy');
-        yuppyClass.forEach(function(faces) {
+        yuppyClass.forEach((faces) => {
           if (value == 0) {
             faces.classList.replace(
               'rich-person_yuppy-very-sad',
@@ -296,7 +296,7 @@
           '.rich-person_oldwoman-happy'
         );
 
-        yuppyClass.forEach(function(faces) {
+        yuppyClass.forEach((faces) => {
           if (value == 0) {
             faces.classList.replace(
               'rich-person_oldwoman-very-sad',
@@ -312,27 +312,27 @@
       g.selectAll('.bars')
         .data(
           stack.keys(category)(
-            data_nest.filter(function(d) {
+            data_nest.filter((d) => {
               return +d.key == value;
             })[0].values
           )
         )
         .selectAll('rect')
-        .data(function(d) {
+        .data((d) => {
           return d;
         })
         .transition()
         .duration(300)
-        .delay(function(d, i) {
+        .delay((d,i) => {
           return i * 50;
         })
-        .attr('height', function(d) {
+        .attr('height', (d) => {
           return y(d[0]) - y(d[1]);
         })
-        .attr('x', function(d) {
+        .attr('x', (d) => {
           return x(d.data.x) - 150;
         })
-        .attr('y', function(d) {
+        .attr('y', (d) => {
           return y(d[1]) + 300;
         })
 
@@ -343,7 +343,7 @@
         .transition()
         .duration(300)
         .attr('text-anchor', 'middle')
-        .text(function(d, i) {
+        .text((d,i) => {
           return d.amount;
         });
     }
@@ -356,40 +356,37 @@
     .append('div')
     .attr('class', 'rich-person')
     .html(
-      '<div>' +
-        '<ul class="rich-person_ul">' +
-          '<li class="rich-person_li">' +
-            '<div class="rich-person_face rich-person_yuppy"><img src="assets/yuppy-face-head-face.svg"></div>' +
-            '<div class="rich-person_emotions rich-person_yuppy-happy"></div>' +
-            '<div class="rich-person_face-tears">' +
-            // tearsSVG +
-            '</div>' +
-          '</li>' +
-        '<li class="rich-person_li">' +
-        '<div class="rich-person_face rich-person_monopoly"><img src="assets/monopoly-face-head.svg"></div>' +
-        '<div class="rich-person_emotions rich-person_face-happy"></div>' +
-        '<div class="rich-person_face-tears">' +
-        // tearsSVG +
-        '</div>' +
-        '</li>' +
-        '<li class="rich-person_li">' +
-        '<div class="rich-person_face rich-person_oldwoman"><img src="assets/old-woman-face.svg"></div>' +
-        '<div class="rich-person_emotions rich-person_oldwoman-happy"></div>' +
-        '<div class="rich-person_face-tears">' +
-        // tearsSVG +
-        '</div>' +
-        '</li>' +
-        '</ul>' +
-        '</div>'
+      `<div>
+        <ul class="rich-person_ul">
+          <li class="rich-person_li">
+            <div class="rich-person_face rich-person_yuppy"><img src="assets/yuppy-face-head-face.svg"></div>
+            <div class="rich-person_emotions rich-person_yuppy-happy"></div>
+            <div class="rich-person_face-tears">
+            </div>
+          </li>
+        <li class="rich-person_li">
+          <div class="rich-person_face rich-person_monopoly"><img src="assets/monopoly-face-head.svg"></div>
+          <div class="rich-person_emotions rich-person_face-happy"></div>
+          <div class="rich-person_face-tears">
+          </div>
+        </li>
+        <li class="rich-person_li">
+          <div class="rich-person_face rich-person_oldwoman"><img src="assets/old-woman-face.svg"></div>
+          <div class="rich-person_emotions rich-person_oldwoman-happy"></div>
+          <div class="rich-person_face-tears">
+          </div>
+        </li>
+        </ul>
+        </div>`
     );
 
-  // document.addEventListener('DOMContentLoaded', function() {
+  // document.addEventListener('DOMContentLoaded', () => {
   //   var pymChild = pym.Child({ polling: 500 });
 
   //   pymChild.sendHeight();
   //   window.addEventListener(
   //     'resize',
-  //     debounce(function() {
+  //     debounce(() => {
   //       pymChild.sendHeight();
   //     }, 250)
   //   );
