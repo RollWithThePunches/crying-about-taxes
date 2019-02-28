@@ -10,12 +10,23 @@
 #graphic {
   margin: 0 auto;
   width: 758px;
-/*  width: 100%;*/
 }
 
-svg {
-  width: 400px;
-  height: 400px;
+.chart-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.chart-container__responsive {
+  display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
 }
 
 #rich-people {

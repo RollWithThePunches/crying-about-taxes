@@ -19,10 +19,10 @@
   }
 
   var parentSelector = '#graphic';
-  var chartHeight = 200;
+  var chartHeight = 400;
 
   var width = parseInt(d3.select(parentSelector).style('width'));
-  var height = chartHeight / 1.8;
+  var height = chartHeight / 3.6;
 
   // Clipping path data
   var clippingData = [
@@ -41,17 +41,13 @@
     { x: 200.35, y: 50 }
   ];
 
-  var svg = d3.select('#tax-graphic');
+  var svg = d3.select('#tax-graphic')
+    .classed('chart-container', true)
+    .append('svg')
+    .attr('preserveAspectRatio', 'xMinYMin meet')
+    .attr('viewBox', '0 0 500 400')
+    .classed('chart-container__responsive', true);
 
-  var aspect = width / height;
-
-  d3.select(window).on('resize', () => {
-    var targetWidth = svg.node().getBoundingClientRect().width;
-    svg.attr('width', targetWidth);
-    svg.attr('height', targetWidth / aspect);
-  });
-
-  // var margin = { top: 20, right: 180, bottom: 30, left: 40 }
 
   var bucketOutline = d3.line()
     .x((d,i) => {
@@ -146,16 +142,14 @@
       })
       .enter()
       .append('rect')
-      .attr('x', (d) => {
-        return x(d.data.x) - 100;
-      })
+      .attr('x',0)
       .attr('y', (d) => {
         return y(d[1]) + 300;
       })
       .attr('height', (d) => {
         return y(d[0]) - y(d[1]);
       })
-      .attr('width', x.bandwidth() + 80);
+      .attr('width', x.bandwidth() + 300);
 
     /*** Percentage values needed ***/
 
@@ -329,12 +323,11 @@
         .attr('height', (d) => {
           return y(d[0]) - y(d[1]);
         })
-        .attr('x', (d) => {
-          return x(d.data.x) - 150;
-        })
+        .attr('x', 0)
         .attr('y', (d) => {
           return y(d[1]) + 300;
         })
+        .attr('width', x.bandwidth() + 300);
 
       g.selectAll('.text')
         .data(data)
